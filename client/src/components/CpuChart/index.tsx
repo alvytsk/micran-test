@@ -10,6 +10,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from 'recharts';
+import './CpuChart.scss';
 
 const CpuChart: React.FC = () => {
   const dispatch = useAppDispatch();
