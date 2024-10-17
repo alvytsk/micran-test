@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 class CpuUsage(BaseModel):
-    cpu_usage: str
+    cpu_usage: float
 
 # Эндпоинт для получения текущей загрузки CPU
 @app.get("/current_cpu_usage", response_model=CpuUsage)
@@ -50,9 +50,9 @@ def startup_event():
 def get_recent_events(
     event_type: Optional[str] = Query(None, description="Тип события (critical, warning, info)"),
     date_start: Optional[str] = Query(None, description="Дата события в формате DD.MM.YYYY"),
-    time_start: Optional[str] = Query(None, description="Время события в формате HH:MM"),
+    # time_start: Optional[str] = Query(None, description="Время события в формате HH:MM"),
     date_end: Optional[str] = Query(None, description="Дата события в формате DD.MM.YYYY"),
-    time_end: Optional[str] = Query(None, description="Время события в формате HH:MM"),
+    # time_end: Optional[str] = Query(None, description="Время события в формате HH:MM"),
     limit: Optional[int] = Query(100, ge=1, le=MAX_EVENTS, description="Количество возвращаемых событий")
 ):
-    return get_events(event_type, date_start, time_start, date_end, time_end, limit)
+    return get_events(event_type, date_start, date_end, limit)

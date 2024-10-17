@@ -1,0 +1,79 @@
+.events-table {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  &__title {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #2d3748;
+  }
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+
+    &__filter {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        color: #4a5568;
+      }
+
+      input,
+      select {
+        padding: 5px;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+    }
+
+    &__apply-btn {
+      align-self: flex-end;
+      padding: 8px 16px;
+      background-color: #63b3ed;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+
+      &:hover {
+        background-color: #4299e1;
+      }
+    }
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background-color: #f7fafc;
+      color: #2d3748;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f7fafc;
+    }
+  }
+
+  &__error {
+    color: red;
+  }
+}

@@ -38,7 +38,9 @@ const CpuChart: React.FC = () => {
           <Line type="monotone" dataKey="value" stroke="#63b3ed" dot={false} />
         </LineChart>
       </ResponsiveContainer>
-      {status === 'failed' && <p className="cpu-chart__error">Ошибка: {error}</p>}
+      {status === 'failed' && (
+        <p className="cpu-chart__error">Ошибка: {error}</p>
+      )}
     </div>
   );
 };

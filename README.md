@@ -10,3 +10,4 @@ uvicorn server:app --reload
 ##Client
 
 npm create vite@latest . -- --template react-ts
+
