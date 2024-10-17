@@ -84,7 +84,17 @@ def get_events(
     
     # Фильтрация по начальной дате и времени
     if date_start:
+        try:
+            datetime.strptime(date_start, "%d.%m.%Y")
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid date_start format. Use DD.MM.YYYY")
+        
         if time_start:
+            try:
+                datetime.strptime(time_start, "%H:%M")
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid time_start format. Use HH:MM")
+
             start_datetime = str_to_datetime(date_start, time_start)
             filtered_events = [e for e in filtered_events if str_to_datetime(e.date, e.time) >= start_datetime]
         else:
@@ -93,7 +103,17 @@ def get_events(
 
     # Фильтрация по конечной дате и времени
     if date_end:
+        try:
+            datetime.strptime(date_end, "%d.%m.%Y")
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid date_end format. Use DD.MM.YYYY")
+
         if time_end:
+            try:
+                datetime.strptime(time_end, "%H:%M")
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid time_end format. Use HH:MM")
+
             end_datetime = str_to_datetime(date_end, time_end)
             filtered_events = [e for e in filtered_events if str_to_datetime(e.date, e.time) <= end_datetime]
         else:
