@@ -19,17 +19,54 @@ class Events(BaseModel):
     events: List[Event]
 
 # Счётчик для автоинкремента id
-event_id_counter = 4
+event_id_counter = 0
 # Хранилище событий
-events_store: List[Event] = [
-    Event(id=1, event="Subsystem with id 267713 fallen", type="critical", date="15.01.2021", time="13:21"),
-    Event(id=2, event="Node №76 fallen with non zero error", type="warning", date="05.11.2022", time="14:42"),
-    Event(id=3, event="Node №5 connected", type="info", date="01.12.2023", time="10:00"),
-    Event(id=4, event="Subsystem with id 571231 fallen", type="critical", date="15.02.2023", time="13:47")
-]
+events_store: List[Event] = []
 events_lock = threading.Lock()
 MAX_EVENTS = 1000  # Максимальное количество хранимых событий
 EVENT_TYPES = ["critical", "warning", "info"]
+
+def initialize_events():
+    global event_id_counter
+    starter_events = [
+        {
+            "event": "Subsystem with id 267713 fallen", 
+            "type": "critical", 
+            "date": "15.01.2021",
+            "time": "13:21",
+        },
+        {
+            "event": "Node №76 fallen with non zero error", 
+            "type": "warning", 
+            "date": "05.11.2022",
+            "time": "14:42",
+        },
+        {
+            "event": "Node №5 connected", 
+            "type": "info", 
+            "date": "01.12.2023",
+            "time": "10:00",
+        },
+        {
+            "event": "Subsystem with id 571231 fallen", 
+            "type": "critical", 
+            "date": "15.02.2023",
+            "time": "13:47",
+        },
+    ]
+
+    with events_lock:
+        for obj in starter_events:
+            events_store.append(Event(
+                id=event_id_counter,
+                event=obj["event"],
+                type=obj["type"],
+                date=obj["date"],
+                time=obj['time']
+            ))
+            event_id_counter += 1
+
+
 
 def generate_event() -> Event:
     global event_id_counter
@@ -47,7 +84,7 @@ def generate_event() -> Event:
         event_text = f"Node #{node_number} {action}"
     
     now = datetime.now()
-    event_id_counter += 1
+    
     return Event(
         id=event_id_counter,
         event=event_text,
@@ -57,8 +94,12 @@ def generate_event() -> Event:
     )
 
 def event_generator():
+    global event_id_counter
+    initialize_events()
+
     while True:
         new_event = generate_event()
+        event_id_counter += 1
         with events_lock:
             events_store.append(new_event)
             if len(events_store) > MAX_EVENTS:

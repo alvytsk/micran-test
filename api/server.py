@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from events import event_generator, get_events, MAX_EVENTS, Events
+from objects import get_object_list, Objects
 
 
 app = FastAPI(title="Micran Test API")
@@ -56,3 +57,13 @@ def get_recent_events(
     limit: Optional[int] = Query(100, ge=1, le=MAX_EVENTS, description="Количество возвращаемых событий")
 ):
     return get_events(event_type, date_start, date_end, limit)
+
+
+# Эндпоинт для получения списка объектов с возможной фильтрацией
+@app.get("/objects_list", response_model=Objects)
+def get_objects_list(
+    object_type: Optional[str] = Query(None, description="Тип объекта (EMS, Network Node, Data Element SNMP)"),
+    object_name: Optional[str] = Query(None, description="Имя объекта"),
+    limit: Optional[int] = Query(100, ge=1, le=1000, description="Количество возвращаемых объектов")
+):
+    return get_object_list(object_type, object_name, limit)
