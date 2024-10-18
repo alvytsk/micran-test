@@ -1,8 +1,8 @@
 import threading
 
-from typing import List
+from typing import List, Literal
 from fastapi import HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, validator
 
 # Модель для объектов
 class Object(BaseModel):
@@ -13,6 +13,9 @@ class Object(BaseModel):
 
 class Objects(BaseModel):
     objects: List[Object]
+
+class ManageObjectRequest(BaseModel):
+    operation_type: Literal["insert", "update", "delete"] = Field(..., description="Тип операции (insert, update, delete)")
 
 objects_store: List[Object] = []
 objects_lock = threading.Lock()
@@ -55,3 +58,7 @@ def get_object_list(object_type, object_name, limit) -> Objects:
     filtered_objects = filtered_objects[-limit:]
     
     return {"objects": filtered_objects}
+
+def proc_manage_object(request: ManageObjectRequest):
+    pass
+    

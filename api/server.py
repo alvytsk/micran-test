@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from events import event_generator, get_events, MAX_EVENTS, Events
-from objects import get_object_list, Objects
+from objects import get_object_list, Objects, ManageObjectRequest, proc_manage_object
 
 
 app = FastAPI(title="Micran Test API")
@@ -67,3 +67,8 @@ def get_objects_list(
     limit: Optional[int] = Query(100, ge=1, le=1000, description="Количество возвращаемых объектов")
 ):
     return get_object_list(object_type, object_name, limit)
+
+# Эндпоинт для управления объектами (insert, update, delete)
+@app.post("/manage_object")
+def manage_object(request: ManageObjectRequest):
+    proc_manage_object(request)
