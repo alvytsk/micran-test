@@ -1,18 +1,18 @@
 .cpu-chart {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 
-    &__title {
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        color: #2d3748;
-    }
+  &__title {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #2d3748;
+  }
 
-    &__error {
-        color: red;
-        margin-bottom: 10px;
-    }
+  &__error {
+    color: red;
+    margin-bottom: 10px;
+  }
 }

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import cpuReducer from './cpuSlice';
+import eventsReducer from './eventsSlice';
 
 const store = configureStore({
   reducer: {
     cpu: cpuReducer,
+    events: eventsReducer,
   },
 });
 

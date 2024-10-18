@@ -1,15 +1,15 @@
 @import '_variables.scss';
 
 .app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    // background-color: #edf2f7;
-    background-color: $background;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  // background-color: #edf2f7;
+  background-color: $background;
 
-    &__content {
-        flex: 1;
-        padding: 20px;
-        margin-bottom: 50px;
-    }
+  &__content {
+    flex: 1;
+    padding: 20px;
+    margin-bottom: 50px;
+  }
 }
