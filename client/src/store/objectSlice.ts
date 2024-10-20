@@ -129,7 +129,7 @@ const objectsSlice = createSlice({
               (obj) => obj.object_id === action.payload.object.object_id,
             );
             if (index !== -1) {
-              state.objects[index] = action.payload.object;
+              state.objects[index] = action.payload.object as ObjectType;
             }
           }
         },

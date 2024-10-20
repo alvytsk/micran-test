@@ -1,5 +1,5 @@
 import React from 'react';
-import { ManageObjectResponse } from '../../types';
+import { ManageObjectResponse } from '../../../types';
 import './JSONResponse.scss';
 
 interface JSONResponseProps {
