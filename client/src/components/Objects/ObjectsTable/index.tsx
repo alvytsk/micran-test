@@ -1,14 +1,16 @@
 import React from 'react';
 import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { ObjectType } from '../../../types';
 import './ObjectsTable.scss';
-import { ObjectType } from '../../types';
 
 const columns: ColumnsType<ObjectType> = [
   {
     title: 'ID',
     dataIndex: 'object_id',
     key: 'object_id',
+    defaultSortOrder: 'descend',
+    sorter: (a, b) => a.object_id - b.object_id,
     width: '5%',
   },
   {
@@ -43,15 +45,22 @@ const columns: ColumnsType<ObjectType> = [
 interface ObjectsTableProps {
   data: ObjectType[];
   onRowClick: (row: ObjectType) => void;
+  loading?: boolean;
 }
 
-const ObjectsTable: React.FC<ObjectsTableProps> = ({ data, onRowClick }) => {
+const ObjectsTable: React.FC<ObjectsTableProps> = ({
+  data,
+  onRowClick,
+  loading,
+}) => {
   return (
     <Table
       className="objects-table"
       columns={columns}
       dataSource={data}
       rowKey="object_id"
+      loading={!!loading}
+      pagination={{ pageSize: 10, hideOnSinglePage: true }}
       onRow={(record) => ({
         onClick: () => {
           onRowClick(record);

@@ -1,8 +1,8 @@
 import React from 'react';
-import ObjectForm from './ObjectForm';
-import './ObjectAdd.scss';
+import ObjectForm from '../ObjectAddForm';
+import './ObjectAddSection.scss';
 
-const ObjectAdd: React.FC = () => {
+const ObjectAddSection: React.FC = () => {
   return (
     <div className="object-add">
       <h3>Добавление объекта</h3>
@@ -13,4 +13,4 @@ const ObjectAdd: React.FC = () => {
   );
 };
 
-export default ObjectAdd;
+export default ObjectAddSection;

@@ -39,7 +39,7 @@ const ObjectFilters: React.FC<ObjectFiltersProps> = ({ onFilter }) => {
         type="primary"
         onClick={handleFilter}
       >
-        Filter
+        Применить
       </Button>
     </div>
   );
