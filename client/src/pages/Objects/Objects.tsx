@@ -7,7 +7,6 @@ import {
   updateObject,
 } from '../../store/objectSlice';
 import { ObjectType } from '../../types';
-// import ObjectFilters from '../../components/Objects/ObjectFilters';
 import ObjectsTable from '../../components/Objects/ObjectsTable';
 import ObjectEditModal from '../../components/Objects/ObjectEditModal';
 import JSONResponse from '../../components/Objects/JSONResponse';
@@ -21,15 +20,10 @@ const Objects: React.FC = () => {
   const objects = useAppSelector((state) => state.objects.objects);
   const status = useAppSelector((state) => state.objects.status);
   const jsonResponse = useAppSelector((state) => state.objects.response);
-  // const error = useAppSelector((state) => state.objects.error);
 
   useEffect(() => {
     dispatch(fetchObjects());
   }, [dispatch]);
-
-  // const onFiltersChange = () => {
-  //   console.log('Filters changed');
-  // };
 
   const handleRowClick = (record: ObjectType) => {
     setSelectedObject(record);
@@ -68,15 +62,11 @@ const Objects: React.FC = () => {
   return (
     <div className="objects-page">
       <div className="objects-page__filters">
-        {
-          //<ObjectFilters onFilter={onFiltersChange} />
-        }
         <ObjectsTable
           data={objects}
           onRowClick={handleRowClick}
           loading={status === 'loading'}
         />
-        {/* <ObjectForm /> */}
         <ObjectAdd />
         {jsonResponse && <JSONResponse jsonResponse={jsonResponse} />}
         {selectedObject && (
