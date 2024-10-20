@@ -59,7 +59,7 @@ const ObjectForm: React.FC = () => {
         style={{ marginTop: 10 }}
       />
       <Button type="primary" onClick={handleSubmit} style={{ marginTop: 10 }}>
-        Submit
+        Добавить
       </Button>
     </div>
   );

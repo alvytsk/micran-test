@@ -33,7 +33,7 @@ export const addObject = createAsyncThunk<
 });
 
 export const updateObject = createAsyncThunk<
-  ManageObjectResponse,
+  { response: ManageObjectResponse; object: UpdateObjectData },
   UpdateObjectData
 >('objects/updateObject', async (updatedObject) => {
   const response = await axios.post<ManageObjectResponse>(
@@ -43,7 +43,10 @@ export const updateObject = createAsyncThunk<
       data: updatedObject,
     },
   );
-  return response.data;
+  return {
+    response: response.data,
+    object: updatedObject,
+  };
 });
 
 export const deleteObject = createAsyncThunk<ManageObjectResponse, number>(
@@ -112,20 +115,36 @@ const objectsSlice = createSlice({
       // Update Object
       .addCase(
         updateObject.fulfilled,
-        (state, action: PayloadAction<ManageObjectResponse>) => {
-          state.response = action.payload;
-          if (
-            action.payload.updated_param &&
-            action.payload.object_id !== undefined
-          ) {
+        (
+          state,
+          action: PayloadAction<{
+            response: ManageObjectResponse;
+            object: UpdateObjectData;
+          }>,
+        ) => {
+          state.response = action.payload.response;
+
+          if (action.payload.object.object_id !== undefined) {
             const index = state.objects.findIndex(
-              (obj) => obj.object_id === action.payload.object_id,
+              (obj) => obj.object_id === action.payload.object.object_id,
             );
             if (index !== -1) {
-              const param = action.payload.updated_param as keyof ObjectType;
-              state.objects[index][param] = action.payload.updated_param;
+              state.objects[index] = action.payload.object;
             }
           }
+
+          // if (
+          //   action.payload.updated_param &&
+          //   action.payload.object_id !== undefined
+          // ) {
+          //   const index = state.objects.findIndex(
+          //     (obj) => obj.object_id === action.payload.object_id,
+          //   );
+          //   if (index !== -1) {
+          //     const param = action.payload.updated_param as keyof ObjectType;
+          //     state.objects[index][param] = action.payload.updated_param;
+          //   }
+          // }
         },
       )
       // Delete Object

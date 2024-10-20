@@ -88,7 +88,7 @@ def insert_object(data: dict):
             object_type=object_type,
             object_description=object_description
         )
-        object_store.append(new_object.dict())
+        object_store.append(new_object)
 
     response = {
         "operation": "insert",

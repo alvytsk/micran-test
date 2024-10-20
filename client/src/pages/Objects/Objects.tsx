@@ -11,6 +11,7 @@ import { ObjectType } from '../../types';
 import ObjectModal from './ObjectModal';
 import ObjectForm from './ObjectForm';
 import JSONResponse from './JSONResponse';
+import { message } from 'antd';
 
 const Objects: React.FC = () => {
   const [selectedObject, setSelectedObject] = useState<ObjectType | null>(null);
@@ -46,14 +47,22 @@ const Objects: React.FC = () => {
   const handleSave = (updatedObject: ObjectType) => {
     console.log('handleSave', updatedObject);
 
-    dispatch(updateObject(updatedObject));
+    dispatch(updateObject(updatedObject)).then(() => {
+      message.success(`Объект ${updatedObject.object_name} успешно изменен`);
+      setSelectedObject(null);
+      setIsModalVisible(false);
+    });
   };
 
   // Обработка удаления объекта
   const handleDelete = (objectId: number) => {
     console.log('handleDelete', objectId);
 
-    dispatch(deleteObject(objectId));
+    dispatch(deleteObject(objectId)).then(() => {
+      message.success(`Объект с ID ${objectId} успешно удален`);
+      setSelectedObject(null);
+      setIsModalVisible(false);
+    });
   };
 
   return (
