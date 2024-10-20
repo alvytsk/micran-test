@@ -1,0 +1,17 @@
+.object-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  &__input {
+    flex: 1;
+  }
+
+  &__select {
+    width: 200px;
+  }
+
+  &__button {
+    align-self: flex-start;
+  }
+}
