@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch } from '../../../store/hooks';
 import { Input, Select, Button, message } from 'antd';
-import { addObject } from '../../store/objectSlice';
-import { InsertObjectData, ObjectTypeVariants } from '../../types';
-import './ObjectForm.scss';
+import { addObject } from '../../../store/objectSlice';
+import { InsertObjectData, ObjectTypeVariants } from '../../../types';
+import './ObjectAddForm.scss';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const ObjectForm: React.FC = () => {
+const ObjectAddForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [name, setName] = useState('');
@@ -69,4 +69,4 @@ const ObjectForm: React.FC = () => {
   );
 };
 
-export default ObjectForm;
+export default ObjectAddForm;

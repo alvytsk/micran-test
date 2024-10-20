@@ -9,8 +9,8 @@ import {
   SelectProps,
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import './ObjectModal.scss';
-import { ObjectType } from '../../types';
+import './ObjectEditModal.scss';
+import { ObjectType } from '../../../types';
 
 interface ObjectModalProps {
   visible: boolean;
@@ -27,7 +27,7 @@ options.push({ value: 'EMS', label: 'EMS' });
 options.push({ value: 'Network Node', label: 'Network Node' });
 options.push({ value: 'Data Element SNMP', label: 'Data Element SNMP' });
 
-const ObjectModal: React.FC<ObjectModalProps> = ({
+const ObjectEditModal: React.FC<ObjectModalProps> = ({
   visible,
   object,
   onSave,
@@ -100,4 +100,4 @@ const ObjectModal: React.FC<ObjectModalProps> = ({
   );
 };
 
-export default ObjectModal;
+export default ObjectEditModal;

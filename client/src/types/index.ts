@@ -7,6 +7,7 @@ export type EventVariants = 'critical' | 'warning' | 'info';
 
 // Тип для события
 export interface EventType {
+  id: number;
   event: string;
   type: EventVariants;
   date: string; // Формат: DD.MM.YYYY

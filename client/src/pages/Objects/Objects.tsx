@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { message } from 'antd';
 import {
   deleteObject,
   fetchObjects,
   updateObject,
 } from '../../store/objectSlice';
-// import ObjectFilters from './ObjectFilters';
-import ObjectsTable from './ObjectsTable';
 import { ObjectType } from '../../types';
-import ObjectModal from './ObjectModal';
-import ObjectForm from './ObjectForm';
-import JSONResponse from './JSONResponse';
-import { message } from 'antd';
-import ObjectAdd from './ObjectAdd';
+// import ObjectFilters from '../../components/Objects/ObjectFilters';
+import ObjectsTable from '../../components/Objects/ObjectsTable';
+import ObjectEditModal from '../../components/Objects/ObjectEditModal';
+import JSONResponse from '../../components/Objects/JSONResponse';
+import ObjectAdd from '../../components/Objects/ObjectAddSection';
 
 const Objects: React.FC = () => {
   const [selectedObject, setSelectedObject] = useState<ObjectType | null>(null);
@@ -25,10 +24,8 @@ const Objects: React.FC = () => {
   // const error = useAppSelector((state) => state.objects.error);
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchObjects());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchObjects());
+  }, [dispatch]);
 
   // const onFiltersChange = () => {
   //   console.log('Filters changed');
@@ -45,26 +42,28 @@ const Objects: React.FC = () => {
   };
 
   // Обработка сохранения изменений
-  const handleSave = (updatedObject: ObjectType) => {
-    console.log('handleSave', updatedObject);
-
-    dispatch(updateObject(updatedObject)).then(() => {
-      message.success(`Объект ${updatedObject.object_name} успешно изменен`);
-      setSelectedObject(null);
-      setIsModalVisible(false);
-    });
-  };
+  const handleSave = useCallback(
+    (updatedObject: ObjectType) => {
+      dispatch(updateObject(updatedObject)).then(() => {
+        message.success(`Объект ${updatedObject.object_name} успешно изменен`);
+        setSelectedObject(null);
+        setIsModalVisible(false);
+      });
+    },
+    [dispatch],
+  );
 
   // Обработка удаления объекта
-  const handleDelete = (objectId: number) => {
-    console.log('handleDelete', objectId);
-
-    dispatch(deleteObject(objectId)).then(() => {
-      message.success(`Объект с ID ${objectId} успешно удален`);
-      setSelectedObject(null);
-      setIsModalVisible(false);
-    });
-  };
+  const handleDelete = useCallback(
+    (objectId: number) => {
+      dispatch(deleteObject(objectId)).then(() => {
+        message.success(`Объект с ID ${objectId} успешно удален`);
+        setSelectedObject(null);
+        setIsModalVisible(false);
+      });
+    },
+    [dispatch],
+  );
 
   return (
     <div className="objects-page">
@@ -72,12 +71,16 @@ const Objects: React.FC = () => {
         {
           //<ObjectFilters onFilter={onFiltersChange} />
         }
-        <ObjectsTable data={objects} onRowClick={handleRowClick} />
+        <ObjectsTable
+          data={objects}
+          onRowClick={handleRowClick}
+          loading={status === 'loading'}
+        />
         {/* <ObjectForm /> */}
         <ObjectAdd />
         {jsonResponse && <JSONResponse jsonResponse={jsonResponse} />}
         {selectedObject && (
-          <ObjectModal
+          <ObjectEditModal
             visible={isModalVisible}
             object={selectedObject}
             onSave={handleSave}
