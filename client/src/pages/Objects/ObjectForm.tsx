@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../store/hooks';
 import { Input, Select, Button, message } from 'antd';
 import { addObject } from '../../store/objectSlice';
 import { InsertObjectData, ObjectTypeVariants } from '../../types';
+import './ObjectForm.scss';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -35,7 +36,7 @@ const ObjectForm: React.FC = () => {
   };
 
   return (
-    <div style={{ marginTop: 20 }}>
+    <div className="object-form">
       <Input
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -45,7 +46,7 @@ const ObjectForm: React.FC = () => {
         value={type}
         onChange={setType}
         placeholder="Тип"
-        style={{ width: '100%', marginTop: 10 }}
+        style={{ width: '100%' }}
       >
         <Option value="EMS">EMS</Option>
         <Option value="Network Node">Network Node</Option>
@@ -56,9 +57,12 @@ const ObjectForm: React.FC = () => {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Описание"
         rows={4}
-        style={{ marginTop: 10 }}
       />
-      <Button type="primary" onClick={handleSubmit} style={{ marginTop: 10 }}>
+      <Button
+        type="primary"
+        onClick={handleSubmit}
+        className="object-form__button"
+      >
         Добавить
       </Button>
     </div>

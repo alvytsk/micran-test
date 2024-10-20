@@ -12,6 +12,7 @@ import ObjectModal from './ObjectModal';
 import ObjectForm from './ObjectForm';
 import JSONResponse from './JSONResponse';
 import { message } from 'antd';
+import ObjectAdd from './ObjectAdd';
 
 const Objects: React.FC = () => {
   const [selectedObject, setSelectedObject] = useState<ObjectType | null>(null);
@@ -72,8 +73,9 @@ const Objects: React.FC = () => {
           //<ObjectFilters onFilter={onFiltersChange} />
         }
         <ObjectsTable data={objects} onRowClick={handleRowClick} />
-        <ObjectForm />
-        <JSONResponse jsonResponse={jsonResponse} />
+        {/* <ObjectForm /> */}
+        <ObjectAdd />
+        {jsonResponse && <JSONResponse jsonResponse={jsonResponse} />}
         {selectedObject && (
           <ObjectModal
             visible={isModalVisible}
