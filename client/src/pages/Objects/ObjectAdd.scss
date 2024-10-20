@@ -1,0 +1,20 @@
+.object-add {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  h3 {
+    color: #6c757d;
+    margin-bottom: 10px;
+  }
+
+  .object-add__form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // gap: 10px;
+  }
+}

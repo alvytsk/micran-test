@@ -1,0 +1,13 @@
+.object-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+
+  &__button {
+    margin-top: 16px;
+    align-self: center;
+    width: 150px;
+  }
+}
