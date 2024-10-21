@@ -33,7 +33,7 @@ export const addObject = createAsyncThunk<
 });
 
 export const updateObject = createAsyncThunk<
-  { response: ManageObjectResponse; object: UpdateObjectData },
+  { response: ManageObjectResponse; object: Partial<ObjectType> },
   UpdateObjectData
 >('objects/updateObject', async (updatedObject) => {
   const response = await axios.post<ManageObjectResponse>(
@@ -119,7 +119,7 @@ const objectsSlice = createSlice({
           state,
           action: PayloadAction<{
             response: ManageObjectResponse;
-            object: UpdateObjectData;
+            object: Partial<ObjectType>;
           }>,
         ) => {
           state.response = action.payload.response;
@@ -129,7 +129,10 @@ const objectsSlice = createSlice({
               (obj) => obj.object_id === action.payload.object.object_id,
             );
             if (index !== -1) {
-              state.objects[index] = action.payload.object as ObjectType;
+              state.objects[index] = {
+                ...state.objects[index],
+                ...(action.payload.object as ObjectType),
+              };
             }
           }
         },

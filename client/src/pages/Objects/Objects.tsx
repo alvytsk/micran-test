@@ -6,7 +6,7 @@ import {
   fetchObjects,
   updateObject,
 } from '../../store/objectSlice';
-import { ObjectType } from '../../types';
+import { ObjectType, UpdateObjectData } from '../../types';
 import ObjectsTable from '../../components/Objects/ObjectsTable';
 import ObjectEditModal from '../../components/Objects/ObjectEditModal';
 import JSONResponse from '../../components/Objects/JSONResponse';
@@ -37,7 +37,9 @@ const Objects: React.FC = () => {
 
   // Обработка сохранения изменений
   const handleSave = useCallback(
-    (updatedObject: ObjectType) => {
+    (updatedObject: Partial<ObjectType>) => {
+      console.log(updatedObject);
+
       dispatch(updateObject(updatedObject)).then(() => {
         message.success(`Объект ${updatedObject.object_name} успешно изменен`);
         setSelectedObject(null);
