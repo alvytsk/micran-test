@@ -34,7 +34,7 @@ export const addObject = createAsyncThunk<
 
 export const updateObject = createAsyncThunk<
   { response: ManageObjectResponse; object: Partial<ObjectType> },
-  UpdateObjectData
+  Partial<ObjectType>
 >('objects/updateObject', async (updatedObject) => {
   const response = await axios.post<ManageObjectResponse>(
     'http://localhost:8000/manage_object',
