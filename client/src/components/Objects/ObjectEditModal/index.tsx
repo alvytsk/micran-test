@@ -15,7 +15,7 @@ import { ObjectType } from '../../../types';
 interface ObjectModalProps {
   visible: boolean;
   object: ObjectType | undefined;
-  onSave: (updatedObject: ObjectType) => void;
+  onSave: (updatedObject: Partial<ObjectType>) => void;
   onDelete: (objectId: number) => void;
   onCancel: () => void;
 }
@@ -37,9 +37,31 @@ const ObjectEditModal: React.FC<ObjectModalProps> = ({
   const [form] = Form.useForm();
 
   const handleSave = () => {
-    form.validateFields().then((values) => {
-      onSave({ ...object, ...values });
-      form.resetFields();
+    let touchedKeys: Array<string> = [];
+    let touched: Partial<ObjectType> = {};
+
+    //получаем массив изменившихся полей
+    if (form.isFieldsTouched()) {
+      touchedKeys = Object.keys(form.getFieldsValue()).filter((el) =>
+        form.isFieldTouched(el),
+      );
+
+      //собираем объект с изменившимися полями
+      touched = touchedKeys.reduce((acc, key) => {
+        return {
+          ...acc,
+          [key]: form.getFieldValue(key),
+        };
+      }, {});
+    }
+
+    const updatedObject = {
+      object_id: object?.object_id,
+      ...touched,
+    };
+
+    form.validateFields().then(() => {
+      onSave(updatedObject);
     });
   };
 
@@ -77,21 +99,25 @@ const ObjectEditModal: React.FC<ObjectModalProps> = ({
         <Form.Item
           name="object_name"
           label="Имя"
-          rules={[{ required: true, message: 'Please input the name' }]}
+          rules={[
+            { required: true, message: 'Это поле обязательно к заполнению' },
+          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="object_type"
           label="Тип"
-          rules={[{ required: true, message: 'Please select the type' }]}
+          rules={[{ required: true, message: 'Выберите тип' }]}
         >
           <Select options={options}></Select>
         </Form.Item>
         <Form.Item
           name="object_description"
           label="Описание"
-          rules={[{ required: true, message: 'Please select the status' }]}
+          rules={[
+            { required: true, message: 'Это поле обязательно к заполнению' },
+          ]}
         >
           <Input />
         </Form.Item>

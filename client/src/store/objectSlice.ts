@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {
-  ObjectType,
-  InsertObjectData,
-  UpdateObjectData,
-  ManageObjectResponse,
-} from '../types';
+import { ObjectType, InsertObjectData, ManageObjectResponse } from '../types';
 
 // Асинхронные экшены для управления объектами
 export const fetchObjects = createAsyncThunk<ObjectType[]>(
@@ -33,8 +28,8 @@ export const addObject = createAsyncThunk<
 });
 
 export const updateObject = createAsyncThunk<
-  { response: ManageObjectResponse; object: UpdateObjectData },
-  UpdateObjectData
+  { response: ManageObjectResponse; object: Partial<ObjectType> },
+  Partial<ObjectType>
 >('objects/updateObject', async (updatedObject) => {
   const response = await axios.post<ManageObjectResponse>(
     'http://localhost:8000/manage_object',
@@ -119,7 +114,7 @@ const objectsSlice = createSlice({
           state,
           action: PayloadAction<{
             response: ManageObjectResponse;
-            object: UpdateObjectData;
+            object: Partial<ObjectType>;
           }>,
         ) => {
           state.response = action.payload.response;
@@ -129,7 +124,10 @@ const objectsSlice = createSlice({
               (obj) => obj.object_id === action.payload.object.object_id,
             );
             if (index !== -1) {
-              state.objects[index] = action.payload.object as ObjectType;
+              state.objects[index] = {
+                ...state.objects[index],
+                ...(action.payload.object as ObjectType),
+              };
             }
           }
         },

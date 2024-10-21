@@ -98,12 +98,41 @@ def insert_object(data: dict):
     current_id += 1
     return response
 
+# def update_object(data: dict):
+#     with objects_lock:
+#         object_id = data.get("object_id")
+#         object_name = data.get("object_name")
+#         object_type = data.get("object_type")
+#         object_description = data.get("object_description")
+
+#         if object_id is None:
+#             return {"error": "object_id must be provided."}
+
+#         obj = next((o for o in object_store if o.object_id == object_id), None)
+#         if obj is None:
+#             return {"error": "Object not found."}
+        
+#         updated_param = ""
+#         if object_name:
+#             obj.object_name = object_name
+#             updated_param = "object_name"
+#         if object_type:
+#             if object_type not in OBJECT_TYPES:
+#                 return {"error": "Invalid object type."}
+#             obj.object_type = object_type
+#             updated_param = "object_type"
+#         if object_description:
+#             obj.object_description = object_description
+#             updated_param = "object_description"
+        
+#         if not updated_param:
+#             return {"error": "At least one field must be updated."}
+        
+#         return {"operation": "update", "updated_param": updated_param, "errors": ""}
+
 def update_object(data: dict):
     with objects_lock:
         object_id = data.get("object_id")
-        object_name = data.get("object_name")
-        object_type = data.get("object_type")
-        object_description = data.get("object_description")
 
         if object_id is None:
             return {"error": "object_id must be provided."}
@@ -111,24 +140,28 @@ def update_object(data: dict):
         obj = next((o for o in object_store if o.object_id == object_id), None)
         if obj is None:
             return {"error": "Object not found."}
-        
-        updated_param = ""
-        if object_name:
-            obj.object_name = object_name
-            updated_param = "object_name"
-        if object_type:
+
+        updated_fields = []
+
+        if "object_name" in data:
+            obj.object_name = data["object_name"]
+            updated_fields.append("object_name")
+
+        if "object_type" in data:
+            object_type = data["object_type"]
             if object_type not in OBJECT_TYPES:
                 return {"error": "Invalid object type."}
             obj.object_type = object_type
-            updated_param = "object_type"
-        if object_description:
-            obj.object_description = object_description
-            updated_param = "object_description"
-        
-        if not updated_param:
+            updated_fields.append("object_type")
+
+        if "object_description" in data:
+            obj.object_description = data["object_description"]
+            updated_fields.append("object_description")
+
+        if not updated_fields:
             return {"error": "At least one field must be updated."}
-        
-        return {"operation": "update", "updated_param": updated_param, "errors": ""}
+
+        return {"operation": "update", "updated_params": updated_fields, "errors": ""}
 
 def delete_object(data: dict):
     with objects_lock:

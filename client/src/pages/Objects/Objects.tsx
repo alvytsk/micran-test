@@ -37,7 +37,7 @@ const Objects: React.FC = () => {
 
   // Обработка сохранения изменений
   const handleSave = useCallback(
-    (updatedObject: ObjectType) => {
+    (updatedObject: Partial<ObjectType>) => {
       dispatch(updateObject(updatedObject)).then(() => {
         message.success(`Объект ${updatedObject.object_name} успешно изменен`);
         setSelectedObject(null);
