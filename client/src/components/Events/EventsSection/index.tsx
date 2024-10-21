@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './EventsSection.scss';
 import EventsTable from '../EventsTable';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { fetchEvents, setFilters } from '../../../store/eventsSlice';
-import EventsFilters, { IEventsFilters } from '../EventsFilters';
+import EventsFilters from '../EventsFilters';
+import { IEventsFilters } from '../../../types';
 
 const EventsSection: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,22 +25,27 @@ const EventsSection: React.FC = () => {
     dispatch(fetchEvents(filters));
   }, [dispatch, filters]);
 
-  const handleFilterChange = (data: IEventsFilters) => {
-    dispatch(
-      setFilters({
-        event_type: data.type || undefined,
-        date_start: data.startDate || undefined,
-        date_end: data.endDate || undefined,
-        limit: data.limit || 100,
-      }),
-    );
-  };
+  const handleFilterChange = useCallback(
+    (data: IEventsFilters) => {
+      const { event_type, date_start, date_end, limit } = data;
+
+      dispatch(
+        setFilters({
+          event_type: event_type || undefined,
+          date_start: date_start || undefined,
+          date_end: date_end || undefined,
+          limit: limit || 100,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
   return (
     <div className="events-section">
       <h3>Последние события</h3>
       <div className="events-section__table-container">
-        <EventsFilters onFilterChange={handleFilterChange} />
+        <EventsFilters onFilterChange={handleFilterChange} values={filters} />
         <EventsTable data={events} />
       </div>
     </div>

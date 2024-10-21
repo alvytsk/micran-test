@@ -5,7 +5,7 @@ export interface CPUUsage {
 
 export type EventVariants = 'critical' | 'warning' | 'info';
 
-// Тип для события
+// Интерфейс для события
 export interface EventType {
   id: number;
   event: string;
@@ -14,9 +14,16 @@ export interface EventType {
   time: string; // Формат: HH:MM
 }
 
+export interface IEventsFilters {
+  event_type?: EventVariants | '' | null;
+  date_start?: string; // Формат: YYYY-MM-DD
+  date_end?: string; // Формат: YYYY-MM-DD
+  limit?: number;
+}
+
 export type ObjectTypeVariants = 'EMS' | 'Network Node' | 'Data Element SNMP';
 
-// Тип для объекта
+// Интерфейс для объекта
 export interface ObjectType {
   object_id: number;
   object_name: string;

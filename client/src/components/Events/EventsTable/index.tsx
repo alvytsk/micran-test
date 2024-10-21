@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { EventType } from '../../../types';
@@ -54,16 +54,15 @@ const propsUpdated = (
   );
 };
 
-const EventsTable: React.FC<EventsTableProps> = React.memo(({ data }) => {
+const EventsTable: React.FC<EventsTableProps> = ({ data }) => {
   return (
     <Table
       className="events-table"
       columns={columns}
       dataSource={data}
       rowKey="id"
-      //   pagination={{ hideOnSinglePage: true }}
     />
   );
-}, propsUpdated);
+};
 
-export default EventsTable;
+export default memo(EventsTable, propsUpdated);
