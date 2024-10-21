@@ -55,14 +55,10 @@ const ObjectEditModal: React.FC<ObjectModalProps> = ({
       }, {});
     }
 
-    console.log(touched);
-
     const updatedObject = {
       object_id: object?.object_id,
       ...touched,
     };
-
-    console.log({ updatedObject });
 
     form.validateFields().then(() => {
       onSave(updatedObject);

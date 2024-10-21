@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {
-  ObjectType,
-  InsertObjectData,
-  UpdateObjectData,
-  ManageObjectResponse,
-} from '../types';
+import { ObjectType, InsertObjectData, ManageObjectResponse } from '../types';
 
 // Асинхронные экшены для управления объектами
 export const fetchObjects = createAsyncThunk<ObjectType[]>(
