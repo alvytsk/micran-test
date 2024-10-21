@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from events import event_generator, get_events, MAX_EVENTS, Events
-from objects import object_store, OBJECT_TYPES, ObjectModel, ObjectsModel, ManageObjectRequest, insert_object, update_object, delete_object
+from objects import object_store, OBJECT_TYPES, ObjectsModel, ManageObjectRequest, insert_object, update_object, delete_object
 
 logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
@@ -39,7 +39,7 @@ class CpuUsage(BaseModel):
 @app.get("/current_cpu_usage", response_model=CpuUsage)
 def get_current_cpu_usage():
     try:
-        cpu_usage = psutil.cpu_percent(interval=.1, percpu=False)
+        cpu_usage = psutil.cpu_percent(interval=0.1, percpu=False)
         return {"cpu_usage": cpu_usage}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -70,19 +70,6 @@ def get_objects_list(
     object_name: Optional[str] = Query(None, description="Имя объекта"),
     limit: Optional[int] = Query(100, ge=1, le=1000, description="Количество возвращаемых объектов")
 ):
-    """
-    Retrieve a list of all objects with optional filters.
-    
-    You can filter the objects by:
-    - **object_type**: EMS, Network Node, Data Element SNMP
-    - **object_name**: Substring match in the object name
-    - **limit**: Maximum number of objects to return
-    
-    Example usage:
-    - `/objects_list?object_type=EMS`
-    - `/objects_list?object_name=starter`
-    - `/objects_list?limit=2`
-    """
     filtered_objects = object_store
 
     # Filter by object_type if provided
@@ -104,15 +91,6 @@ def get_objects_list(
 # Эндпоинт для управления объектами (insert, update, delete)
 @app.post("/manage_object", summary="Manage objects (insert, update, delete)", response_model=dict)
 def manage_object(request: ManageObjectRequest):
-    """
-    This endpoint manages objects through three operations:
-    
-    - **Insert**: Creates a new object. All fields (`object_name`, `object_type`, `object_description`) must be provided.
-    - **Update**: Updates an existing object. Requires `object_id` and at least one field to update (`object_name`, `object_type`, or `object_description`).
-    - **Delete**: Deletes an existing object. Requires `object_id`.
-    
-    The `operation_type` field in the request determines the action: 'insert', 'update', or 'delete'.
-    """
     operation_type = request.operation_type
     data = request.data
 
