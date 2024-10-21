@@ -1,30 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
+import moment from 'dayjs';
 import { Form, InputNumber, Select, Button, DatePicker } from 'antd';
 import { RangePickerProps } from 'antd/lib/date-picker';
 import './EventsFilters.scss';
-import { EventVariants } from '../../../types';
+import { EventVariants, IEventsFilters } from '../../../types';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 interface EventsFiltersProps {
   onFilterChange: (filters: IEventsFilters) => void;
+  values: IEventsFilters;
 }
 
-export interface IEventsFilters {
-  limit: number;
-  type: EventVariants | '' | null;
-  startDate: string | null;
-  endDate: string | null;
-}
-
-const EventsFilters: React.FC<EventsFiltersProps> = ({ onFilterChange }) => {
-  const [filters, setFilters] = useState<IEventsFilters>({
-    limit: 100,
-    type: '',
-    startDate: null,
-    endDate: null,
-  });
+const EventsFilters: React.FC<EventsFiltersProps> = ({
+  onFilterChange,
+  values,
+}) => {
+  const [filters, setFilters] = useState<IEventsFilters>(values);
 
   const handleLimitChange = (value: number | null) => {
     setFilters((prev) => ({
@@ -36,18 +29,15 @@ const EventsFilters: React.FC<EventsFiltersProps> = ({ onFilterChange }) => {
   const handleTypeChange = (value: EventVariants | '' | null) => {
     setFilters((prev) => ({
       ...prev,
-      type: value,
+      event_type: value,
     }));
   };
 
   const handleDateChange: RangePickerProps['onChange'] = (_, dateStrings) => {
-    const startDate = dateStrings[0] ? dateStrings[0] : null;
-    const endDate = dateStrings[1] ? dateStrings[1] : null;
-
     setFilters((prev) => ({
       ...prev,
-      startDate,
-      endDate,
+      date_start: dateStrings[0] ? dateStrings[0] : undefined,
+      date_end: dateStrings[1] ? dateStrings[1] : undefined,
     }));
   };
 
@@ -67,7 +57,7 @@ const EventsFilters: React.FC<EventsFiltersProps> = ({ onFilterChange }) => {
         </Form.Item>
         <Form.Item label="Тип">
           <Select
-            value={filters.type}
+            value={filters.event_type}
             defaultValue={''}
             onChange={handleTypeChange}
             style={{ width: '150px' }}
@@ -80,11 +70,10 @@ const EventsFilters: React.FC<EventsFiltersProps> = ({ onFilterChange }) => {
         </Form.Item>
         <Form.Item label="Диапазон">
           <RangePicker
-            // value={
-            //   filters.startDate && filters.endDate
-            //     ? [filters.startDate, filters.endDate]
-            //     : null
-            // }
+            value={[
+              filters.date_start ? moment(filters.date_start) : undefined,
+              filters.date_end ? moment(filters.date_end) : undefined,
+            ]}
             allowEmpty={[false, true]}
             onChange={handleDateChange}
           />
@@ -103,4 +92,4 @@ const EventsFilters: React.FC<EventsFiltersProps> = ({ onFilterChange }) => {
   );
 };
 
-export default EventsFilters;
+export default memo(EventsFilters);

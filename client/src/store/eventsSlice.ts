@@ -1,20 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { EventType, EventVariants } from '../types';
+import { EventType, IEventsFilters } from '../types';
 import { format } from 'date-fns';
-
-interface EventsFilters {
-  event_type?: EventVariants;
-  date_start?: string; // Формат: YYYY-MM-DD
-  date_end?: string; // Формат: YYYY-MM-DD
-  limit?: number;
-}
 
 interface EventsState {
   events: EventType[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
-  filters: EventsFilters;
+  filters: IEventsFilters;
 }
 
 const initialState: EventsState = {
@@ -27,10 +20,10 @@ const initialState: EventsState = {
 };
 
 // Асинхронный экшен для получения событий
-export const fetchEvents = createAsyncThunk<EventType[], EventsFilters>(
+export const fetchEvents = createAsyncThunk<EventType[], IEventsFilters>(
   'events/fetchEvents',
   async (filters) => {
-    const params: Partial<EventsFilters> = {};
+    const params: Partial<IEventsFilters> = {};
 
     if (filters.event_type) params.event_type = filters.event_type;
     if (filters.date_start)
@@ -58,7 +51,7 @@ const eventsSlice = createSlice({
   name: 'events',
   initialState,
   reducers: {
-    setFilters(state, action: PayloadAction<EventsFilters>) {
+    setFilters(state, action: PayloadAction<IEventsFilters>) {
       state.filters = { ...state.filters, ...action.payload };
     },
   },
